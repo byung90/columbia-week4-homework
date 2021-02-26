@@ -1,7 +1,8 @@
 var timeCount = 50;
 var timer;
 var questionIndex = 0;
-var questionInAction;
+var questionInActionEl = document.querySelector(".question-section-h1");
+var answerOptionsInActionEl = document.querySelector(".answer-section-list");
 var answerOptionsInAction = [];
 var questions = [
   {
@@ -115,19 +116,27 @@ var questions = [
 // }
 
 function loadQuestion() {
-  var selectedQuestion = Object.entries(questions[questionIndex]);
-
-  console.log(selectedQuestion);
-
-  questionInAction = selectedQuestion[0][1];
-
-  console.log(questionInAction);
-
-  for (var i = 1; i < selectedQuestion.length; i++) {
-    var randomIndex = Math.floor(Math.random() * selectedQuestion.length);
-    answerOptionsInAction[i - 1] = selectedQuestion[randomIndex][1];
-    selectedQuestion.splice(randomIndex, 1);
+  var selectedQuestion = questions[questionIndex];
+  let optionsInArray = [selectedQuestion.option0, selectedQuestion.option1, selectedQuestion.option2, selectedQuestion.option3];
+  var i = 0;
+  while (optionsInArray.length > 0) {
+    var randomIndex = Math.floor(Math.random() * optionsInArray.length);
+    answerOptionsInAction[i] = optionsInArray[randomIndex];
+    optionsInArray.splice(randomIndex, 1);
+    i++;
   }
+
+  questionInActionEl.textContent = selectedQuestion.question;
+
+  for (var x = 0; x < answerOptionsInAction.length; x++) {
+    let lineItemEl = document.createElement("li");
+    let lineItemButtonEl = document.createElement("button");
+    lineItemButtonEl.textContent = answerOptionsInAction[x].value;
+    lineItemButtonEl.setAttribute("data-value", answerOptionsInAction[x].value);
+    lineItemEl.append(lineItemButtonEl);
+    answerOptionsInActionEl.append(lineItemEl);
+  }
+
 }
 
 loadQuestion();
