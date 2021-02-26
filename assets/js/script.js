@@ -1,6 +1,9 @@
-var timeCount = 10;
+var timeCount = 50;
 var timer;
 var questionIndex = 0;
+var quizSectionEl = document.querySelector(".quiz-section");
+var timerSectionEl = document.querySelector(".timer-section");
+var scoreSectionEl = document.querySelector(".score-section");
 var questionInActionEl = document.querySelector(".question-section-h1");
 var answerOptionsInActionEl = document.querySelector(".answer-section-list");
 var timerEl = document.querySelector(".timer-section-h1");
@@ -29,58 +32,58 @@ var questions = [
   {
     question: "Choose the correct JavaScript syntax to change the content of the following HTML code.",
     option0: {
-      value: "document.getElementById(“geek”).innerHTML=”I am a Geek”;",
+      value: "document.getElementById(\"geek\").innerHTML=\"I am a Geek\";",
       answer: true
     },
 
     option1: {
-      value: "document.getElement(“geek”).innerHTML=”I am a Geek”;",
+      value: "document.getElement(\"geek\").innerHTML=\"I am a Geek\";",
       answer: false
     },
     option2: {
-      value: "document.getId(“geek”)=”I am a Geek”;",
+      value: "document.getId(\"geek\")=\"I am a Geek\";",
       answer: false
     },
     option3: {
-      value: "document.getElementById(“geek”).innerHTML=I am a Geek;",
+      value: "document.getElementById(\"geek\").innerHTML=I am a Geek;",
       answer: false
     }
   },
   {
-    question: "Which of the following is the correct syntax to display “GeeksforGeeks” in an alert box using JavaScript?",
+    question: "Which of the following is the correct syntax to display \"GeeksforGeeks\" in an alert box using JavaScript?",
     option0: {
-      value: "alert(“GeeksforGeeks”);",
+      value: "alert(\"GeeksforGeeks\");",
       answer: true
     },
     option1: {
-      value: "alertbox(“GeeksforGeeks”);",
+      value: "alertbox(\"GeeksforGeeks\");",
       answer: false
     },
     option2: {
-      value: "msg(“GeeksforGeeks”);",
+      value: "msg(\"GeeksforGeeks\");",
       answer: false
     },
     option3: {
-      value: "msgbox(“GeeksforGeeks”);",
+      value: "msgbox(\"GeeksforGeeks\");",
       answer: false
     }
   },
   {
-    question: "What is the correct syntax for referring to an external script called “geek.js”?",
+    question: "What is the correct syntax for referring to an external script called \"geek.js\"?",
     option0: {
-      value: "<script src=”geek.js”>",
+      value: "<script src=\"geek.js\">",
       answer: true
     },
     option1: {
-      value: "<script href=”geek.js”>",
+      value: "<script href=\"geek.js\">",
       answer: false
     },
     option2: {
-      value: "<script ref=”geek.js”>",
+      value: "<script ref=\"geek.js\">",
       answer: false
     },
     option3: {
-      value: "<script name=”geek.js”>",
+      value: "<script name=\"geek.js\">",
       answer: false
     }
   },
@@ -113,8 +116,7 @@ function startTimer() {
     timerEl.textContent = timeCount;
 
     if (timeCount === 0) {
-      clearInterval(timer);
-      //game over
+      gameOver();
     }
   }, 1000);
 }
@@ -126,6 +128,13 @@ function loadQuestion() {
     let selectedQuestion = questions[questionIndex];
     let optionsInArray = [selectedQuestion.option0, selectedQuestion.option1, selectedQuestion.option2, selectedQuestion.option3];
     var i = 0;
+
+    let lineItemsEl = document.querySelectorAll("li");
+    if (lineItemsEl.length > 0) {
+      for (var x = 0; x < lineItemsEl.length; x++) {
+        lineItemsEl[x].remove();
+      }
+    }
 
     while (optionsInArray.length > 0) {
       var randomIndex = Math.floor(Math.random() * optionsInArray.length);
@@ -146,7 +155,7 @@ function loadQuestion() {
     }
   }
   else {
-    // game over
+    gameOver();
   }
 }
 
@@ -159,11 +168,12 @@ function checkAnswer(event) {
     let correctAnswer = questions[questionIndex].option0.value;
 
     if (elementDataValue === correctAnswer) {
+      questionIndex++;
       updateScore();
-      // questionIndex++; //Uncomment this after timer is put in place
+      loadQuestion();
     }
     else {
-      timeCount -= 1;
+      timeCount -= 5;
       timerEl.textContent = timeCount;
     }
   }
@@ -172,6 +182,40 @@ function checkAnswer(event) {
 // Add Update Score
 function updateScore() {
   score += 4;
+}
+
+// Game Over
+function gameOver() {
+  clearInterval(timer);
+  quizSectionEl.remove();
+  quizSectionEl.remove();
+
+  score += timeCount;
+
+  //Display Score
+  let scoreDisplayEl = document.createElement("h1");
+  scoreDisplayEl.textContent = "Your score is " + score + "."
+
+  //Form to Submit Score
+  let initialsLabelEl = document.createElement("label");
+  let initialsInputEl = document.createElement("input");
+  let submitInitialEl = document.createElement("button");
+
+  initialsLabelEl.textContent = "Initials:"
+  initialsInputEl.setAttribute("id", "initials");
+  submitInitialEl.setAttribute("id", "submit");
+  submitInitialEl.textContent = "Submit";
+
+  scoreSectionEl.append(scoreDisplayEl);
+  scoreSectionEl.append(initialsLabelEl);
+  scoreSectionEl.append(initialsInputEl);
+  scoreSectionEl.append(submitInitialEl);
+
+  //Submit Form
+  submitInitialEl.addEventListener("click", function () {
+    var initial = initialsInputEl.value;
+
+  });
 }
 
 answerOptionsInActionEl.addEventListener("click", checkAnswer);
