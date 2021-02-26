@@ -116,9 +116,10 @@ var questions = [
 // }
 
 function loadQuestion() {
-  var selectedQuestion = questions[questionIndex];
+  let selectedQuestion = questions[questionIndex];
   let optionsInArray = [selectedQuestion.option0, selectedQuestion.option1, selectedQuestion.option2, selectedQuestion.option3];
   var i = 0;
+
   while (optionsInArray.length > 0) {
     var randomIndex = Math.floor(Math.random() * optionsInArray.length);
     answerOptionsInAction[i] = optionsInArray[randomIndex];
@@ -136,7 +137,24 @@ function loadQuestion() {
     lineItemEl.append(lineItemButtonEl);
     answerOptionsInActionEl.append(lineItemEl);
   }
-
 }
+
+function checkAnswer(event) {
+  let element = event.target
+  let elementDataValue = element.getAttribute("data-value");
+
+  if (elementDataValue !== null) {
+    let correctAnswer = questions[questionIndex].option0.value;
+
+    if (elementDataValue === correctAnswer) {
+      console.log(true);
+    }
+    else {
+      console.log(false);
+    }
+  }
+}
+
+answerOptionsInActionEl.addEventListener("click", checkAnswer);
 
 loadQuestion();
