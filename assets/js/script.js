@@ -1,8 +1,9 @@
-var timeCount = 50;
+var timeCount = 10;
 var timer;
 var questionIndex = 0;
 var questionInActionEl = document.querySelector(".question-section-h1");
 var answerOptionsInActionEl = document.querySelector(".answer-section-list");
+var timerEl = document.querySelector(".timer-section-h1");
 var answerOptionsInAction = [];
 var score = 0;
 var questions = [
@@ -104,40 +105,48 @@ var questions = [
   }
 ];
 
-// function startTimer() {
-//   timer = setInterval(function () {
-//     timeCount--;
+//Start Timer
+function startTimer() {
+  timer = setInterval(function () {
+    timeCount--;
 
-//     // load question
+    timerEl.textContent = timeCount;
 
-//     if (timeCount == 0) {
-//       clearInterval(timeCount);
-//     }
-//   }, 1000);
-// }
+    if (timeCount === 0) {
+      clearInterval(timer);
+      //game over
+    }
+  }, 1000);
+}
+
 
 //Load a question
 function loadQuestion() {
-  let selectedQuestion = questions[questionIndex];
-  let optionsInArray = [selectedQuestion.option0, selectedQuestion.option1, selectedQuestion.option2, selectedQuestion.option3];
-  var i = 0;
+  if (questionIndex < questions.length) {
+    let selectedQuestion = questions[questionIndex];
+    let optionsInArray = [selectedQuestion.option0, selectedQuestion.option1, selectedQuestion.option2, selectedQuestion.option3];
+    var i = 0;
 
-  while (optionsInArray.length > 0) {
-    var randomIndex = Math.floor(Math.random() * optionsInArray.length);
-    answerOptionsInAction[i] = optionsInArray[randomIndex];
-    optionsInArray.splice(randomIndex, 1);
-    i++;
+    while (optionsInArray.length > 0) {
+      var randomIndex = Math.floor(Math.random() * optionsInArray.length);
+      answerOptionsInAction[i] = optionsInArray[randomIndex];
+      optionsInArray.splice(randomIndex, 1);
+      i++;
+    }
+
+    questionInActionEl.textContent = selectedQuestion.question;
+
+    for (var x = 0; x < answerOptionsInAction.length; x++) {
+      let lineItemEl = document.createElement("li");
+      let lineItemButtonEl = document.createElement("button");
+      lineItemButtonEl.textContent = answerOptionsInAction[x].value;
+      lineItemButtonEl.setAttribute("data-value", answerOptionsInAction[x].value);
+      lineItemEl.append(lineItemButtonEl);
+      answerOptionsInActionEl.append(lineItemEl);
+    }
   }
-
-  questionInActionEl.textContent = selectedQuestion.question;
-
-  for (var x = 0; x < answerOptionsInAction.length; x++) {
-    let lineItemEl = document.createElement("li");
-    let lineItemButtonEl = document.createElement("button");
-    lineItemButtonEl.textContent = answerOptionsInAction[x].value;
-    lineItemButtonEl.setAttribute("data-value", answerOptionsInAction[x].value);
-    lineItemEl.append(lineItemButtonEl);
-    answerOptionsInActionEl.append(lineItemEl);
+  else {
+    // game over
   }
 }
 
@@ -154,7 +163,8 @@ function checkAnswer(event) {
       // questionIndex++; //Uncomment this after timer is put in place
     }
     else {
-      console.log(false);
+      timeCount -= 1;
+      timerEl.textContent = timeCount;
     }
   }
 }
@@ -162,9 +172,9 @@ function checkAnswer(event) {
 // Add Update Score
 function updateScore() {
   score += 4;
-  console.log(score);
 }
 
 answerOptionsInActionEl.addEventListener("click", checkAnswer);
 
 loadQuestion();
+startTimer();
