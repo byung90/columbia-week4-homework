@@ -1,14 +1,17 @@
 var timeCount = 50;
 var timer;
 var questionIndex = 0;
+var mainEl = document.querySelector("#main");
 var quizSectionEl = document.querySelector(".quiz-section");
 var timerSectionEl = document.querySelector(".timer-section");
 var scoreSectionEl = document.querySelector(".score-section");
+var gameOverSectionEl = document.querySelector(".game-over-section");
 var questionInActionEl = document.querySelector(".question-section-h1");
 var answerOptionsInActionEl = document.querySelector(".answer-section-list");
 var timerEl = document.querySelector(".timer-section-h1");
 var answerOptionsInAction = [];
 var score = 0;
+var highScore;
 var questions = [
   {
     question: "What is the HTML tag under which one can write the JavaScript code?",
@@ -113,9 +116,10 @@ function startTimer() {
   timer = setInterval(function () {
     timeCount--;
 
-    timerEl.textContent = timeCount;
-
-    if (timeCount === 0) {
+    if (timeCount >= 0) {
+      timerEl.textContent = timeCount;
+    }
+    else {
       gameOver();
     }
   }, 1000);
@@ -174,7 +178,12 @@ function checkAnswer(event) {
     }
     else {
       timeCount -= 5;
-      timerEl.textContent = timeCount;
+      if (timeCount >= 0) {
+        timerEl.textContent = timeCount;
+      }
+      else {
+        timerEl.textContent = 0;
+      }
     }
   }
 }
@@ -187,10 +196,18 @@ function updateScore() {
 // Game Over
 function gameOver() {
   clearInterval(timer);
-  quizSectionEl.remove();
-  quizSectionEl.remove();
 
-  score += timeCount;
+  quizSectionEl.style.display = "none";
+  timerSectionEl.style.display = "none";
+  scoreSectionEl.style.display = "block";
+
+  if (timeCount > 0) {
+    score += timeCount;
+  }
+  else {
+    score = 0;
+  }
+
 
   //Display Score
   let scoreDisplayEl = document.createElement("h1");
@@ -213,12 +230,55 @@ function gameOver() {
 
   //Submit Form
   submitInitialEl.addEventListener("click", function () {
-    var initial = initialsInputEl.value;
+    var initials = initialsInputEl.value;
+    var scoreWithInitials = {
+      initials: initials,
+      score: score
+    }
+    highScore.push(scoreWithInitials);
+    localStorage.setItem("savedScores", JSON.stringify(highScore));
+    let playAgain = confirm("Your initial is " + initials + ".\n Your score is " + score + ".");
+
+    if (playAgain) {
+      timeCount = 50;
+      score = 0;
+      questionIndex = 0;
+
+      scoreDisplayEl.remove();
+      initialsLabelEl.remove();
+      initialsInputEl.remove();
+      submitInitialEl.remove();
+
+      quizSectionEl.style.display = "block";
+      timerSectionEl.style.display = "block";
+      scoreSectionEl.style.display = "none";
+
+      timerEl.textContent = 50;
+
+      loadQuestion();
+      startTimer();
+      getSavedScores();
+    }
+    else {
+      scoreSectionEl.style.display = "none";
+
+      let gameOverEl = document.createElement("h1");
+      gameOverEl.textContent = "Game Over";
+      gameOverSectionEl.append(gameOverEl);
+    }
 
   });
+
+
+}
+
+//Get all saved scores
+function getSavedScores() {
+  highScore = JSON.parse(localStorage.getItem("savedScores"));
 }
 
 answerOptionsInActionEl.addEventListener("click", checkAnswer);
 
 loadQuestion();
 startTimer();
+getSavedScores();
