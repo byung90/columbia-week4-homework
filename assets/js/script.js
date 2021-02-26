@@ -4,6 +4,7 @@ var questionIndex = 0;
 var questionInActionEl = document.querySelector(".question-section-h1");
 var answerOptionsInActionEl = document.querySelector(".answer-section-list");
 var answerOptionsInAction = [];
+var score = 0;
 var questions = [
   {
     question: "What is the HTML tag under which one can write the JavaScript code?",
@@ -115,6 +116,7 @@ var questions = [
 //   }, 1000);
 // }
 
+//Load a question
 function loadQuestion() {
   let selectedQuestion = questions[questionIndex];
   let optionsInArray = [selectedQuestion.option0, selectedQuestion.option1, selectedQuestion.option2, selectedQuestion.option3];
@@ -139,6 +141,7 @@ function loadQuestion() {
   }
 }
 
+// Check if selected answer is correct
 function checkAnswer(event) {
   let element = event.target
   let elementDataValue = element.getAttribute("data-value");
@@ -147,12 +150,19 @@ function checkAnswer(event) {
     let correctAnswer = questions[questionIndex].option0.value;
 
     if (elementDataValue === correctAnswer) {
-      console.log(true);
+      updateScore();
+      // questionIndex++; //Uncomment this after timer is put in place
     }
     else {
       console.log(false);
     }
   }
+}
+
+// Add Update Score
+function updateScore() {
+  score += 4;
+  console.log(score);
 }
 
 answerOptionsInActionEl.addEventListener("click", checkAnswer);
