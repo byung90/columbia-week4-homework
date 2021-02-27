@@ -208,7 +208,6 @@ function gameOver() {
     score = 0;
   }
 
-
   //Display Score
   let scoreDisplayEl = document.createElement("h1");
   scoreDisplayEl.textContent = "Your score is " + score + "."
@@ -266,10 +265,7 @@ function gameOver() {
       gameOverEl.textContent = "Game Over";
       gameOverSectionEl.append(gameOverEl);
     }
-
   });
-
-
 }
 
 //Get all saved scores
