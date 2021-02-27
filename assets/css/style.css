@@ -1,3 +1,4 @@
+/* Intialize */
 * {
   margin: 0;
   padding: 0;
@@ -7,12 +8,13 @@ body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+/* Overall Display Flex Structure */
 header, main, .timer-section, .quiz-section, .question-section, .answer-section, .score-section, .game-over-section, .score-display-section, .score-form-section {
   display: flex;
   justify-content: center;
 }
 
-
+/* Header */
 header {
   align-items: center;
   height: 200px;
@@ -23,6 +25,7 @@ header h1 {
   color: white;
 }
 
+/* Main */
 main {
   width: 80%;
   margin: 0 auto;
@@ -35,6 +38,7 @@ main {
   align-items: center;
 }
 
+/* Quiz Section */
 .quiz-section {
   flex-wrap: wrap;
 }
@@ -67,6 +71,7 @@ main {
   color: white;
 }
 
+/* Score Section */
 .score-section {
   flex-wrap: wrap;
 }
