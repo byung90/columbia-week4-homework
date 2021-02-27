@@ -1,0 +1,73 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+header, main, .timer-section, .quiz-section, .question-section, .answer-section, .score-section, .game-over-section {
+  display: flex;
+  justify-content: center;
+}
+
+
+header {
+  align-items: center;
+  height: 200px;
+  background-color: brown;
+}
+
+header h1 {
+  color: white;
+}
+
+main {
+  width: 80%;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.timer-section, .quiz-section {
+  width: 100%;
+  padding-top: 20px;
+  align-items: center;
+}
+
+.timer-section {
+}
+
+.quiz-section {
+  flex-wrap: wrap;
+}
+
+.question-section, .answer-section {
+  width: 100%;
+  padding-top: 20px;
+}
+
+.answer-section-list {
+  list-style-type: none;
+  text-align: center;
+}
+
+.answer-section-list li {
+  padding: 5px 0;
+}
+
+.answer-section-list li button {
+  padding: 10px;
+  font-size: 14px;
+}
+
+.incorrect-answer {
+  background-color: red;
+  color: white;
+}
+
+.score-section, .game-over-section {
+  padding-top: 20px;
+  align-items: center;
+}
+
