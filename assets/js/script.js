@@ -177,6 +177,7 @@ function checkAnswer(event) {
       loadQuestion();
     }
     else {
+      element.setAttribute("class", "incorrect-answer");
       timeCount -= 5;
       if (timeCount >= 0) {
         timerEl.textContent = timeCount;
@@ -199,7 +200,7 @@ function gameOver() {
 
   quizSectionEl.style.display = "none";
   timerSectionEl.style.display = "none";
-  scoreSectionEl.style.display = "block";
+  scoreSectionEl.style.display = "flex";
 
   if (timeCount > 0) {
     score += timeCount;
@@ -209,10 +210,15 @@ function gameOver() {
   }
 
   //Display Score
+  let scoreDisplaySectionEl = document.createElement("section");
   let scoreDisplayEl = document.createElement("h1");
+  scoreDisplaySectionEl.setAttribute("class", "score-display-section");
   scoreDisplayEl.textContent = "Your score is " + score + "."
 
+  scoreDisplaySectionEl.append(scoreDisplayEl);
+
   //Form to Submit Score
+  let scoreFormSectionEl = document.createElement("section");
   let initialsLabelEl = document.createElement("label");
   let initialsInputEl = document.createElement("input");
   let submitInitialEl = document.createElement("button");
@@ -222,10 +228,14 @@ function gameOver() {
   submitInitialEl.setAttribute("id", "submit");
   submitInitialEl.textContent = "Submit";
 
-  scoreSectionEl.append(scoreDisplayEl);
-  scoreSectionEl.append(initialsLabelEl);
-  scoreSectionEl.append(initialsInputEl);
-  scoreSectionEl.append(submitInitialEl);
+  scoreFormSectionEl.setAttribute("class", "score-form-section");
+
+  scoreFormSectionEl.append(initialsLabelEl);
+  scoreFormSectionEl.append(initialsInputEl);
+  scoreFormSectionEl.append(submitInitialEl);
+
+  scoreSectionEl.append(scoreDisplaySectionEl);
+  scoreSectionEl.append(scoreFormSectionEl);
 
   //Submit Form
   submitInitialEl.addEventListener("click", function () {
@@ -248,8 +258,8 @@ function gameOver() {
       initialsInputEl.remove();
       submitInitialEl.remove();
 
-      quizSectionEl.style.display = "block";
-      timerSectionEl.style.display = "block";
+      quizSectionEl.style.display = "flex";
+      timerSectionEl.style.display = "flex";
       scoreSectionEl.style.display = "none";
 
       timerEl.textContent = 50;

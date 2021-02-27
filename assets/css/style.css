@@ -7,7 +7,7 @@ body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-header, main, .timer-section, .quiz-section, .question-section, .answer-section, .score-section, .game-over-section {
+header, main, .timer-section, .quiz-section, .question-section, .answer-section, .score-section, .game-over-section, .score-display-section, .score-form-section {
   display: flex;
   justify-content: center;
 }
@@ -29,22 +29,14 @@ main {
   flex-wrap: wrap;
 }
 
-.timer-section, .quiz-section {
+.timer-section, .quiz-section, .question-section, .answer-section, .score-section, .game-over-section, .score-display-section, .score-form-section {
   width: 100%;
   padding-top: 20px;
   align-items: center;
 }
 
-.timer-section {
-}
-
 .quiz-section {
   flex-wrap: wrap;
-}
-
-.question-section, .answer-section {
-  width: 100%;
-  padding-top: 20px;
 }
 
 .answer-section-list {
@@ -59,6 +51,15 @@ main {
 .answer-section-list li button {
   padding: 10px;
   font-size: 14px;
+  border: none;
+}
+
+.answer-section-list li button:active {
+  border: none;
+}
+
+.answer-section-list li button:hover {
+  box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24), 0 5px 50px 0 rgba(0,0,0,0.19);
 }
 
 .incorrect-answer {
@@ -66,8 +67,18 @@ main {
   color: white;
 }
 
-.score-section, .game-over-section {
-  padding-top: 20px;
-  align-items: center;
+.score-section {
+  flex-wrap: wrap;
 }
 
+.score-form-section input{
+  margin: 0 5px;
+  line-height: 35px;
+  padding: 0 3px;
+  font-size: 16px;
+}
+
+.score-form-section button{
+  padding: 10px;
+  border: none;
+}
