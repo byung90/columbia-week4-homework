@@ -280,7 +280,12 @@ function gameOver() {
 
 //Get all saved scores
 function getSavedScores() {
-  highScore = JSON.parse(localStorage.getItem("savedScores"));
+  if (localStorage.getItem("savedScores") !== null) {
+    highScore = JSON.parse(localStorage.getItem("savedScores"));
+  }
+  else {
+    highScore = [];
+  }
 }
 
 answerOptionsInActionEl.addEventListener("click", checkAnswer);
